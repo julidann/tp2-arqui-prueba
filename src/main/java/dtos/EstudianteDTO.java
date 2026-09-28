@@ -52,14 +52,12 @@ public class EstudianteDTO {
 
     @Override
     public String toString() {
-        return "EstudianteDTO{" +
-                "nombres='" + nombres +
-                ", apellido='" + apellido  +
-                ", edad=" + edad +
-                ", genero='" + genero  +
-                ", dni=" + dni +
-                ", ciudadResidencia='" + ciudadResidencia  +
-                ", lu=" + lu +
-                '}';
+        return "Nombres: " + nombres
+                + " | Apellido: " + apellido
+                + " | Edad: " + edad
+                + " | Genero: " + genero
+                + " | DNI: " + dni
+                + " | Ciudad: " + ciudadResidencia
+                + " | LU: " + lu;
     }
 }
