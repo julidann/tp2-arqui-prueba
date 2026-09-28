@@ -7,7 +7,6 @@ import entities.Estudiante;
 import entities.Inscripcion;
 import jakarta.persistence.*;
 import repositories.interfaces.RepositoryCarrera;
-import java.time.LocalDate;
 import java.util.*;
 
 public class JpaCarreraRepository implements RepositoryCarrera {
@@ -20,72 +19,111 @@ public class JpaCarreraRepository implements RepositoryCarrera {
     @Override
     public void save(Carrera carrera) {
         EntityTransaction tx = em.getTransaction();
+
         try {
             tx.begin();
             em.persist(carrera);
             tx.commit();
-        } catch (RuntimeException e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
+
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            e.printStackTrace();
         }
     }
 
     @Override
     public CarreraDTO selectById(int id) {
-        Carrera c = em.find(Carrera.class, id);
-        if (c == null) return null;
-        CarreraDTO dto = new CarreraDTO(c.getNombre());
-        c.getInscripciones().forEach(dto::addInscripcion);
+        Carrera carrera = em.find(Carrera.class, id);
+
+        if (carrera == null) {
+            return null;
+        }
+
+        CarreraDTO dto = new CarreraDTO(carrera.getNombre());
+
+        for (Inscripcion inscripcion : carrera.getInscripciones()) {
+            dto.addInscripcion(inscripcion);
+        }
+
         return dto;
     }
 
     @Override
     public List<CarreraDTO> selectAll() {
         List<Carrera> carreras = em.createQuery(
-                "SELECT c FROM Carrera c ORDER BY c.nombre ASC", Carrera.class).getResultList();
-        return carreras.stream().map(c -> {
-            CarreraDTO dto = new CarreraDTO(c.getNombre());
-            c.getInscripciones().forEach(dto::addInscripcion);
-            return dto;
-        }).toList();
+                "SELECT c FROM Carrera c ORDER BY c.nombre ASC",
+                Carrera.class
+        ).getResultList();
+
+        List<CarreraDTO> resultado = new ArrayList<>();
+
+        for (Carrera carrera : carreras) {
+            CarreraDTO dto = new CarreraDTO(carrera.getNombre());
+
+            for (Inscripcion inscripcion : carrera.getInscripciones()) {
+                dto.addInscripcion(inscripcion);
+            }
+
+            resultado.add(dto);
+        }
+
+        return resultado;
     }
 
     @Override
     public boolean delete(int id) {
         EntityTransaction tx = em.getTransaction();
+
         try {
-            Carrera c = em.find(Carrera.class, id);
-            if (c == null) return false;
+            Carrera carrera = em.find(Carrera.class, id);
+
+            if (carrera == null) {
+                return false;
+            }
+
             tx.begin();
-            em.remove(c);
+            em.remove(carrera);
             tx.commit();
+
             return true;
-        } catch (RuntimeException e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
+
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            return false;
         }
     }
 
     @Override
     public void matricularEstudianteEnCarrera(Long lu, String nombreCarrera) {
         Estudiante estudiante = em.createQuery(
-                "SELECT e FROM Estudiante e WHERE e.lu = :lu", Estudiante.class)
+                "SELECT e FROM Estudiante e WHERE e.lu = :lu",
+                Estudiante.class)
                 .setParameter("lu", lu)
                 .getSingleResult();
 
         Carrera carrera = em.createQuery(
-                "SELECT c FROM Carrera c WHERE c.nombre = :nombre", Carrera.class)
+                "SELECT c FROM Carrera c WHERE c.nombre = :nombre",
+                Carrera.class)
                 .setParameter("nombre", nombreCarrera)
                 .getSingleResult();
 
         EntityTransaction tx = em.getTransaction();
+
         try {
             tx.begin();
             em.persist(new Inscripcion(carrera, estudiante));
             tx.commit();
-        } catch (RuntimeException e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
+
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            e.printStackTrace();
         }
     }
 
@@ -93,23 +131,37 @@ public class JpaCarreraRepository implements RepositoryCarrera {
     public List<CarreraDTO> generarReporteCarreras() {
         List<Carrera> carreras = em.createQuery(
                 "SELECT DISTINCT c FROM Carrera c LEFT JOIN FETCH c.inscripciones i ORDER BY c.nombre ASC",
-                Carrera.class).getResultList();
+                Carrera.class
+        ).getResultList();
 
-        return carreras.stream().map(c -> {
-            CarreraDTO dto = new CarreraDTO(c.getNombre());
-            c.getInscripciones().stream()
-                    .sorted(Comparator.comparing(Inscripcion::getAnioInscripcion,
-                            Comparator.nullsLast(Comparator.naturalOrder())))
-                    .forEach(dto::addInscripcion);
-            return dto;
-        }).toList();
+        List<CarreraDTO> resultado = new ArrayList<>();
+
+        for (Carrera carrera : carreras) {
+            CarreraDTO dto = new CarreraDTO(carrera.getNombre());
+
+            List<Inscripcion> inscripciones = new ArrayList<>(carrera.getInscripciones());
+
+            inscripciones.sort(Comparator.comparing(
+                    Inscripcion::getAnioInscripcion,
+                    Comparator.nullsLast(Comparator.naturalOrder())
+            ));
+
+            for (Inscripcion inscripcion : inscripciones) {
+                dto.addInscripcion(inscripcion);
+            }
+
+            resultado.add(dto);
+        }
+
+        return resultado;
     }
 
     @Override
     public List<ReporteCarreraDTO> reporteCarreras() {
         List<Carrera> carreras = em.createQuery(
                 "SELECT DISTINCT c FROM Carrera c LEFT JOIN FETCH c.inscripciones i ORDER BY c.nombre ASC",
-                Carrera.class).getResultList();
+                Carrera.class
+        ).getResultList();
 
         List<ReporteCarreraDTO> reporte = new ArrayList<>();
 
@@ -117,14 +169,31 @@ public class JpaCarreraRepository implements RepositoryCarrera {
             Map<Integer, Long> inscriptosPorAnio = new TreeMap<>();
             Map<Integer, Long> egresadosPorAnio = new TreeMap<>();
 
-            for (Inscripcion i : carrera.getInscripciones()) {
-                if (i.getAnioInscripcion() != null) {
-                    int anio = i.getAnioInscripcion().getYear();
-                    inscriptosPorAnio.merge(anio, 1L, Long::sum);
+            for (Inscripcion inscripcion : carrera.getInscripciones()) {
+                if (inscripcion.getAnioInscripcion() != null) {
+                    int anio = inscripcion.getAnioInscripcion().getYear();
+
+                    if (!inscriptosPorAnio.containsKey(anio)) {
+                        inscriptosPorAnio.put(anio, 0L);
+                    }
+
+                    inscriptosPorAnio.put(
+                            anio,
+                            inscriptosPorAnio.get(anio) + 1
+                    );
                 }
-                if (i.isGraduado() && i.getAnioEgreso() != null) {
-                    int anio = i.getAnioEgreso().getYear();
-                    egresadosPorAnio.merge(anio, 1L, Long::sum);
+
+                if (inscripcion.isGraduado() && inscripcion.getAnioEgreso() != null) {
+                    int anio = inscripcion.getAnioEgreso().getYear();
+
+                    if (!egresadosPorAnio.containsKey(anio)) {
+                        egresadosPorAnio.put(anio, 0L);
+                    }
+
+                    egresadosPorAnio.put(
+                            anio,
+                            egresadosPorAnio.get(anio) + 1
+                    );
                 }
             }
 
@@ -136,9 +205,11 @@ public class JpaCarreraRepository implements RepositoryCarrera {
                         carrera.getNombre(),
                         anio,
                         inscriptosPorAnio.getOrDefault(anio, 0L),
-                        egresadosPorAnio.getOrDefault(anio, 0L)));
+                        egresadosPorAnio.getOrDefault(anio, 0L)
+                ));
             }
         }
+
         return reporte;
     }
 }
