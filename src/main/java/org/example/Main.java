@@ -10,13 +10,17 @@ import repositories.interfaces.RepositoryCarrera;
 import repositories.interfaces.RepositoryEstudiante;
 import repositories.interfaces.RepositoryInscripcion;
 
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+
 public class Main {
     public static void main(String[] args) {
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+
         CSVreader reader = new CSVreader();
         RepositoryFactory factory = RepositoryFactory.getDAOFactory(RepositoryFactory.MYSQL_JDBC);
 
         try {
-
             DatabaseLoader.cargarDatos(reader, factory);
 
             EntityManager em = JpaMySqlRepositoryFactory
@@ -27,19 +31,26 @@ public class Main {
             RepositoryCarrera carreras = factory.getCarreraRepository(em);
             RepositoryInscripcion inscripciones = factory.getInscripcionRepository(em);
 
-            /*//--- 2a) AGREGAR UN ESTUDIANTE ---
-                Estudiante nuevoEstudiante = new Estudiante(
-                39550725,"Julieta", "D'Annunzio", 24,"Female",
-                "Tandil",
-                40000L
-                );
-                estudianteRepository.save(nuevoEstudiante);
+            // --- 2a) AGREGAR UN ESTUDIANTE ---
+            /*
+            Estudiante nuevoEstudiante = new Estudiante(
+                    39550725,
+                    "Julieta",
+                    "D'Annunzio",
+                    24,
+                    "Female",
+                    "Tandil",
+                    40000L
+            );
+            estudiantes.save(nuevoEstudiante);
             */
 
-            /* --- 2b) INSCRIBIR ESTUDIANTE EN UNA CARRERA ---
-                carreras.matricularEstudianteEnCarrera(34978L, "TUDAI");
+            // --- 2b) INSCRIBIR ESTUDIANTE EN UNA CARRERA ---
+            /*
+            carreras.matricularEstudianteEnCarrera(34978L, "TUDAI");
             */
-            System.out.println("\n --- 2c) ESTUDIANTES ORDENADOS POR NOMBRE ===");
+
+            System.out.println("\n=== 2c) ESTUDIANTES ORDENADOS POR NOMBRE ===");
             estudiantes.obtenerEstudiantesOrdenadosPorNombre().forEach(System.out::println);
 
             System.out.println("\n=== 2d) ESTUDIANTE POR LIBRETA UNIVERSITARIA ===");
