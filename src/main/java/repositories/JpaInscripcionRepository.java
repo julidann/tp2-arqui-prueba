@@ -17,13 +17,17 @@ public class JpaInscripcionRepository implements RepositoryInscripcion {
     @Override
     public void save(Inscripcion inscripcion) {
         EntityTransaction tx = em.getTransaction();
+
         try {
             tx.begin();
             em.persist(inscripcion);
             tx.commit();
-        } catch (RuntimeException e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
+
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            e.printStackTrace();
         }
     }
 
@@ -33,7 +37,10 @@ public class JpaInscripcionRepository implements RepositoryInscripcion {
                 "SELECT new dtos.InscripcionDTO(i.antiguedad,i.anioInscripcion,i.anioEgreso," +
                 "i.graduado,c.nombre,e.lu) FROM Inscripcion i " +
                 "JOIN i.carrera c JOIN i.estudiante e WHERE i.id = :id",
-                InscripcionDTO.class).setParameter("id", id).getResultList();
+                InscripcionDTO.class)
+                .setParameter("id", id)
+                .getResultList();
+
         return result.isEmpty() ? null : result.get(0);
     }
 
@@ -43,22 +50,33 @@ public class JpaInscripcionRepository implements RepositoryInscripcion {
                 "SELECT new dtos.InscripcionDTO(i.antiguedad,i.anioInscripcion,i.anioEgreso," +
                 "i.graduado,c.nombre,e.lu) FROM Inscripcion i " +
                 "JOIN i.carrera c JOIN i.estudiante e ORDER BY c.nombre, e.lu",
-                InscripcionDTO.class).getResultList();
+                InscripcionDTO.class
+        ).getResultList();
     }
 
     @Override
     public boolean delete(int id) {
         EntityTransaction tx = em.getTransaction();
+
         try {
-            Inscripcion i = em.find(Inscripcion.class, id);
-            if (i == null) return false;
+            Inscripcion inscripcion = em.find(Inscripcion.class, id);
+
+            if (inscripcion == null) {
+                return false;
+            }
+
             tx.begin();
-            em.remove(i);
+            em.remove(inscripcion);
             tx.commit();
+
             return true;
-        } catch (RuntimeException e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
+
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -68,7 +86,8 @@ public class JpaInscripcionRepository implements RepositoryInscripcion {
                 "SELECT new dtos.CarreraConCantInscriptosDTO(c.nombre, COUNT(i)) " +
                 "FROM Carrera c JOIN c.inscripciones i " +
                 "GROUP BY c.id, c.nombre ORDER BY COUNT(i) DESC, c.nombre ASC",
-                CarreraConCantInscriptosDTO.class).getResultList();
+                CarreraConCantInscriptosDTO.class
+        ).getResultList();
     }
 
     @Override
