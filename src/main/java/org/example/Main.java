@@ -50,24 +50,37 @@ public class Main {
             */
 
             System.out.println("\n---2c) MOSTRAR TODOS LOS ESTUDIANTES ORDENADOS POR NOMBRE---");
-            estudiantes.obtenerEstudiantesOrdenadosPorNombre().forEach(System.out::println);
+
+            for (EstudianteDTO estudiante : estudiantes.obtenerEstudiantesOrdenadosPorNombre()) {
+                System.out.println(estudiante);
+            }
 
             System.out.println("\n--- 2d) BUSCAR ESTUDIANTE POR NRO DE LIBRETA UNIVERSITARIA ---");
             System.out.println(estudiantes.buscarPorLibreta(34978L));
 
             System.out.println("\n--- 2e) MOSTRAR TODOS LOS ESTUDIANTES DE GÉNERO FEMENINO ===");
-            estudiantes.buscarPorGenero("Female").forEach(System.out::println);
+
+            for (EstudianteDTO estudiante : estudiantes.buscarPorGenero("Female")) {
+                System.out.println(estudiante);
+            }
 
             System.out.println("\n--- 2f) MOSTRAR CARRERAS CON ESTUDIANTES INSCRIPTOS,ORDENADOS POR CANTIDAD DE INSCRIPTOS ---");
-            inscripciones.recuperarCarrerasOrdenadasPorCantidadInscriptos()
-                    .forEach(System.out::println);
+
+            for (CarreraConCantInscriptosDTO carrera : inscripciones.recuperarCarrerasOrdenadasPorCantidadInscriptos()) {
+                System.out.println(carrera);
+            }
 
             System.out.println("\n--- 2g) MOSTRAR ESTUDIANTES POR CARRERA Y CIUDAD ---");
-            inscripciones.estudiantesDeCarreraPorCiudad("TUDAI", "Rauch")
-                    .forEach(System.out::println);
+
+            for (InscripcionDTO inscripcion : inscripciones.estudiantesDeCarreraPorCiudad("TUDAI", "Rauch")) {
+                System.out.println(inscripcion);
+            }
 
             System.out.println("\n--- 3) REPORTE DE CARRERAS ---");
-            carreras.reporteCarreras().forEach(System.out::println);
+
+            for (ReporteCarreraDTO reporte : carreras.reporteCarreras()) {
+                System.out.println(reporte);
+            }
 
             em.close();
             JpaMySqlRepositoryFactory.getEntityManagerFactory().close();

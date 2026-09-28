@@ -50,11 +50,8 @@ public class Carrera {
         this.duracion = duracion;
     }
 
-    public void setInscripciones(List<Inscripcion> inscripciones) {
-        this.inscripciones = inscripciones;
-    }
-
     public List<Inscripcion> getInscripciones() {
+
         return new ArrayList<>(inscripciones);
     }
 

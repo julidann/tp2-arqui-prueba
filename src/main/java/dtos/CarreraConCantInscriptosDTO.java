@@ -11,13 +11,25 @@ public class CarreraConCantInscriptosDTO {
         this.cantInscriptos = cantInscriptos;
     }
 
-    public String getNombre() { return nombre; }
-    public long getCantInscriptos() { return cantInscriptos; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setCantInscriptos(long cantInscriptos) { this.cantInscriptos = cantInscriptos; }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public long getCantInscriptos() {
+        return cantInscriptos;
+    }
+
+    public void setCantInscriptos(long cantInscriptos) {
+        this.cantInscriptos = cantInscriptos;
+    }
 
     @Override
     public String toString() {
-        return nombre + " - inscriptos: " + cantInscriptos;
+
+        return nombre+ " (" + cantInscriptos+")";
     }
 }

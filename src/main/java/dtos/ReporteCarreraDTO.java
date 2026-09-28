@@ -13,13 +13,27 @@ public class ReporteCarreraDTO {
         this.egresados = egresados;
     }
 
-    public String getCarrera() { return carrera; }
-    public int getAnio() { return anio; }
-    public long getInscriptos() { return inscriptos; }
-    public long getEgresados() { return egresados; }
+    public String getCarrera() {
+        return carrera;
+    }
+
+    public int getAnio() {
+        return anio;
+    }
+
+    public long getInscriptos() {
+        return inscriptos;
+    }
+
+    public long getEgresados() {
+        return egresados;
+    }
 
     @Override
     public String toString() {
-        return carrera + " | " + anio + " | inscriptos: " + inscriptos + " | egresados: " + egresados;
+        return carrera + " | "
+                + anio
+                + " | inscriptos: " + inscriptos
+                + " | egresados: "  + egresados;
     }
 }

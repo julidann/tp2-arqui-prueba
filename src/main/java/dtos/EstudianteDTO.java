@@ -22,21 +22,33 @@ public class EstudianteDTO {
         this.lu = lu;
     }
 
-    public String getNombres() { return nombres; }
-    public String getApellido() { return apellido; }
-    public int getEdad() { return edad; }
-    public String getGenero() { return genero; }
-    public int getDni() { return dni; }
-    public String getCiudadResidencia() { return ciudadResidencia; }
-    public Long getLu() { return lu; }
+    public String getNombres() {
+        return nombres;
+    }
 
-    public void setNombres(String nombres) { this.nombres = nombres; }
-    public void setApellido(String apellido) { this.apellido = apellido; }
-    public void setEdad(int edad) { this.edad = edad; }
-    public void setGenero(String genero) { this.genero = genero; }
-    public void setDni(int dni) { this.dni = dni; }
-    public void setCiudadResidencia(String ciudadResidencia) { this.ciudadResidencia = ciudadResidencia; }
-    public void setLu(Long lu) { this.lu = lu; }
+    public String getApellido() {
+        return apellido;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public int getDni() {
+        return dni;
+    }
+
+    public String getCiudadResidencia() {
+        return ciudadResidencia;
+    }
+
+    public Long getLu() {
+        return lu;
+    }
 
     @Override
     public String toString() {
