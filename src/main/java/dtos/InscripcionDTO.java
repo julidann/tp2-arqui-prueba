@@ -81,13 +81,11 @@ public class InscripcionDTO {
 
     @Override
     public String toString() {
-        return "InscripcionDTO{" +
-                "antiguedad=" + antiguedad +
-                ", anioInscripcion=" + anioInscripcion +
-                ", anioEgreso=" + anioEgreso +
-                ", graduado=" + graduado +
-                ", carrera='" + nombreCarrera  +
-                ", luEstudiante=" + luEstudiante +
-                '}';
+        return "Antiguedad: " + antiguedad
+                + " | Año inscripcion: " + anioInscripcion
+                + " | Año egreso: " + anioEgreso
+                + " | Graduado: " + graduado
+                + " | Carrera: " + nombreCarrera
+                + " | LU estudiante: " + luEstudiante;
     }
 }
