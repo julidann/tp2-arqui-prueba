@@ -22,7 +22,7 @@ public class JpaCarreraRepository implements RepositoryCarrera {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(carrera);
+            em.persist(carrera);
             tx.commit();
         } catch (RuntimeException e) {
             if (tx.isActive()) tx.rollback();
