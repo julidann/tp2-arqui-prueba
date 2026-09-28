@@ -4,6 +4,7 @@ import dtos.EstudianteDTO;
 import entities.Estudiante;
 import jakarta.persistence.*;
 import repositories.interfaces.RepositoryEstudiante;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JpaEstudianteRepository implements RepositoryEstudiante {
@@ -15,31 +16,37 @@ public class JpaEstudianteRepository implements RepositoryEstudiante {
 
     @Override
     public void save(Estudiante estudiante) {
-        EntityTransaction tx = em.getTransaction();
-
         try {
-            tx.begin();
+            em.getTransaction().begin();
             em.persist(estudiante);
-            tx.commit();
+            em.getTransaction().commit();
 
         } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
             e.printStackTrace();
         }
     }
 
     @Override
     public EstudianteDTO selectById(int dni) {
-        List<EstudianteDTO> result = em.createQuery(
-                "SELECT new dtos.EstudianteDTO(e.nombres,e.apellido,e.edad,e.genero,e.dni,e.ciudadResidencia,e.lu) " +
-                "FROM Estudiante e WHERE e.dni = :dni",
-                EstudianteDTO.class)
-                .setParameter("dni", dni)
-                .getResultList();
+        EstudianteDTO estudiante = null;
 
-        return result.isEmpty() ? null : result.get(0);
+        try {
+            List<EstudianteDTO> resultado = em.createQuery(
+                    "SELECT new dtos.EstudianteDTO(e.nombres,e.apellido,e.edad,e.genero,e.dni,e.ciudadResidencia,e.lu) " +
+                    "FROM Estudiante e WHERE e.dni = :dni",
+                    EstudianteDTO.class)
+                    .setParameter("dni", dni)
+                    .getResultList();
+
+            if (!resultado.isEmpty()) {
+                estudiante = resultado.get(0);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return estudiante;
     }
 
     @Override
@@ -49,58 +56,82 @@ public class JpaEstudianteRepository implements RepositoryEstudiante {
 
     @Override
     public boolean delete(int dni) {
-        EntityTransaction tx = em.getTransaction();
+        boolean eliminado = false;
 
         try {
             Estudiante estudiante = em.find(Estudiante.class, dni);
 
-            if (estudiante == null) {
-                return false;
+            if (estudiante != null) {
+                em.getTransaction().begin();
+                em.remove(estudiante);
+                em.getTransaction().commit();
+                eliminado = true;
             }
-
-            tx.begin();
-            em.remove(estudiante);
-            tx.commit();
-
-            return true;
 
         } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
             e.printStackTrace();
-            return false;
         }
+
+        return eliminado;
     }
 
     @Override
     public List<EstudianteDTO> obtenerEstudiantesOrdenadosPorNombre() {
-        return em.createQuery(
-                "SELECT new dtos.EstudianteDTO(e.nombres,e.apellido,e.edad,e.genero,e.dni,e.ciudadResidencia,e.lu) " +
-                "FROM Estudiante e ORDER BY e.nombres ASC",
-                EstudianteDTO.class
-        ).getResultList();
+        List<EstudianteDTO> estudiantes = new ArrayList<>();
+
+        try {
+            estudiantes = em.createQuery(
+                    "SELECT new dtos.EstudianteDTO(e.nombres,e.apellido,e.edad,e.genero,e.dni,e.ciudadResidencia,e.lu) " +
+                    "FROM Estudiante e ORDER BY e.nombres ASC",
+                    EstudianteDTO.class
+            ).getResultList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return estudiantes;
     }
 
     @Override
     public EstudianteDTO buscarPorLibreta(Long lu) {
-        List<EstudianteDTO> result = em.createQuery(
-                "SELECT new dtos.EstudianteDTO(e.nombres,e.apellido,e.edad,e.genero,e.dni,e.ciudadResidencia,e.lu) " +
-                "FROM Estudiante e WHERE e.lu = :lu",
-                EstudianteDTO.class)
-                .setParameter("lu", lu)
-                .getResultList();
+        EstudianteDTO estudiante = null;
 
-        return result.isEmpty() ? null : result.get(0);
+        try {
+            List<EstudianteDTO> resultado = em.createQuery(
+                    "SELECT new dtos.EstudianteDTO(e.nombres,e.apellido,e.edad,e.genero,e.dni,e.ciudadResidencia,e.lu) " +
+                    "FROM Estudiante e WHERE e.lu = :lu",
+                    EstudianteDTO.class)
+                    .setParameter("lu", lu)
+                    .getResultList();
+
+            if (!resultado.isEmpty()) {
+                estudiante = resultado.get(0);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return estudiante;
     }
 
     @Override
     public List<EstudianteDTO> buscarPorGenero(String genero) {
-        return em.createQuery(
-                "SELECT new dtos.EstudianteDTO(e.nombres,e.apellido,e.edad,e.genero,e.dni,e.ciudadResidencia,e.lu) " +
-                "FROM Estudiante e WHERE e.genero = :genero ORDER BY e.apellido ASC, e.nombres ASC",
-                EstudianteDTO.class)
-                .setParameter("genero", genero)
-                .getResultList();
+        List<EstudianteDTO> estudiantes = new ArrayList<>();
+
+        try {
+            estudiantes = em.createQuery(
+                    "SELECT new dtos.EstudianteDTO(e.nombres,e.apellido,e.edad,e.genero,e.dni,e.ciudadResidencia,e.lu) " +
+                    "FROM Estudiante e WHERE e.genero = :genero ORDER BY e.apellido ASC, e.nombres ASC",
+                    EstudianteDTO.class)
+                    .setParameter("genero", genero)
+                    .getResultList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return estudiantes;
     }
 }
