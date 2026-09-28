@@ -16,6 +16,7 @@ public class Main {
         RepositoryFactory factory = RepositoryFactory.getDAOFactory(RepositoryFactory.MYSQL_JDBC);
 
         try {
+
             DatabaseLoader.cargarDatos(reader, factory);
 
             EntityManager em = JpaMySqlRepositoryFactory
@@ -26,7 +27,19 @@ public class Main {
             RepositoryCarrera carreras = factory.getCarreraRepository(em);
             RepositoryInscripcion inscripciones = factory.getInscripcionRepository(em);
 
-            System.out.println("\n=== 2c) ESTUDIANTES ORDENADOS POR NOMBRE ===");
+            /*//--- 2a) AGREGAR UN ESTUDIANTE ---
+                Estudiante nuevoEstudiante = new Estudiante(
+                39550725,"Julieta", "D'Annunzio", 24,"Female",
+                "Tandil",
+                40000L
+                );
+                estudianteRepository.save(nuevoEstudiante);
+            */
+
+            /* --- 2b) INSCRIBIR ESTUDIANTE EN UNA CARRERA ---
+                carreras.matricularEstudianteEnCarrera(34978L, "TUDAI");
+            */
+            System.out.println("\n --- 2c) ESTUDIANTES ORDENADOS POR NOMBRE ===");
             estudiantes.obtenerEstudiantesOrdenadosPorNombre().forEach(System.out::println);
 
             System.out.println("\n=== 2d) ESTUDIANTE POR LIBRETA UNIVERSITARIA ===");
@@ -40,7 +53,7 @@ public class Main {
                     .forEach(System.out::println);
 
             System.out.println("\n=== 2g) ESTUDIANTES DE UNA CARRERA POR CIUDAD ===");
-            inscripciones.estudiantesDeCarreraPorCiudad("TUDAI", "Santiago")
+            inscripciones.estudiantesDeCarreraPorCiudad("TUDAI", "Rauch")
                     .forEach(System.out::println);
 
             System.out.println("\n=== 3) REPORTE DE CARRERAS ===");

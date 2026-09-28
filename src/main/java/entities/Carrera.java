@@ -26,11 +26,33 @@ public class Carrera {
         this.duracion = duracion;
     }
 
-    public int getId() { return id; }
-    public String getNombre() { return nombre; }
-    public int getDuracion() { return duracion; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setDuracion(int duracion) { this.duracion = duracion; }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
+    }
+
+    public void setInscripciones(List<Inscripcion> inscripciones) {
+        this.inscripciones = inscripciones;
+    }
 
     public List<Inscripcion> getInscripciones() {
         return new ArrayList<>(inscripciones);
@@ -51,6 +73,10 @@ public class Carrera {
 
     @Override
     public String toString() {
-        return "Carrera{id=" + id + ", nombre='" + nombre + "', duracion=" + duracion + "}";
+
+        return "Carrera{id=" + id + ", " +
+                "nombre='" + nombre +
+                "', duracion=" + duracion +
+                "}";
     }
 }

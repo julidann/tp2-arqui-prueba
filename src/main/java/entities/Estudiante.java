@@ -36,22 +36,61 @@ public class Estudiante {
         this.lu = lu;
     }
 
-    public int getId() { return dni; }
-    public void setId(int id) { this.dni = id; }
-    public int getDni() { return dni; }
-    public void setDni(int dni) { this.dni = dni; }
-    public String getNombres() { return nombres; }
-    public void setNombres(String nombres) { this.nombres = nombres; }
-    public String getApellido() { return apellido; }
-    public void setApellido(String apellido) { this.apellido = apellido; }
-    public int getEdad() { return edad; }
-    public void setEdad(int edad) { this.edad = edad; }
-    public String getGenero() { return genero; }
-    public void setGenero(String genero) { this.genero = genero; }
-    public String getCiudadResidencia() { return ciudadResidencia; }
-    public void setCiudadResidencia(String ciudadResidencia) { this.ciudadResidencia = ciudadResidencia; }
-    public Long getLu() { return lu; }
-    public void setLu(Long lu) { this.lu = lu; }
+    public int getDni() {
+        return dni;
+    }
+
+    public void setDni(int dni) {
+        this.dni = dni;
+    }
+
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public String getCiudadResidencia() {
+        return ciudadResidencia;
+    }
+
+    public void setCiudadResidencia(String ciudadResidencia) {
+        this.ciudadResidencia = ciudadResidencia;
+    }
+
+    public Long getLu() {
+        return lu;
+    }
+
+    public void setLu(Long lu) {
+        this.lu = lu;
+    }
 
     public List<Inscripcion> getInscripciones() {
         return new ArrayList<>(inscripciones);

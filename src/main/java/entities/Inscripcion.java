@@ -42,17 +42,59 @@ public class Inscripcion {
         this.estudiante = estudiante;
     }
 
-    public Integer getId() { return id; }
-    public int getAntiguedad() { return antiguedad; }
-    public void setAntiguedad(int antiguedad) { this.antiguedad = antiguedad; }
-    public LocalDate getAnioInscripcion() { return anioInscripcion; }
-    public void setAnioInscripcion(LocalDate anioInscripcion) { this.anioInscripcion = anioInscripcion; }
-    public LocalDate getAnioEgreso() { return anioEgreso; }
-    public void setAnioEgreso(LocalDate anioEgreso) { this.anioEgreso = anioEgreso; }
-    public boolean isGraduado() { return graduado; }
-    public void setGraduado(boolean graduado) { this.graduado = graduado; }
-    public Carrera getCarrera() { return carrera; }
-    public void setCarrera(Carrera carrera) { this.carrera = carrera; }
-    public Estudiante getEstudiante() { return estudiante; }
-    public void setEstudiante(Estudiante estudiante) { this.estudiante = estudiante; }
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getAntiguedad() {
+        return antiguedad;
+    }
+
+    public void setAntiguedad(int antiguedad) {
+        this.antiguedad = antiguedad;
+    }
+
+    public LocalDate getAnioInscripcion() {
+        return anioInscripcion;
+    }
+
+    public void setAnioInscripcion(LocalDate anioInscripcion) {
+        this.anioInscripcion = anioInscripcion;
+    }
+
+    public LocalDate getAnioEgreso() {
+        return anioEgreso;
+    }
+
+    public void setAnioEgreso(LocalDate anioEgreso) {
+        this.anioEgreso = anioEgreso;
+    }
+
+    public boolean isGraduado() {
+        return graduado;
+    }
+
+    public void setGraduado(boolean graduado) {
+        this.graduado = graduado;
+    }
+
+    public Carrera getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(Carrera carrera) {
+        this.carrera = carrera;
+    }
+
+    public Estudiante getEstudiante() {
+        return estudiante;
+    }
+
+    public void setEstudiante(Estudiante estudiante) {
+        this.estudiante = estudiante;
+    }
 }

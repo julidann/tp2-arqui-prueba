@@ -18,7 +18,9 @@ public class CSVreader {
     public List<Carrera> leerArchivoCarreras() throws IOException {
         List<Carrera> carreras = new ArrayList<>();
         try (InputStream in = getClass().getClassLoader().getResourceAsStream("csv_files/carreras.csv")) {
-            if (in == null) throw new FileNotFoundException("No se encontró carreras.csv");
+            if (in == null) {
+                throw new FileNotFoundException("No se encontró csv_files/carreras.csv en resources");
+            }
             try (Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
                  CSVParser parser = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).build().parse(reader)) {
                 for (CSVRecord row : parser) {
@@ -35,8 +37,11 @@ public class CSVreader {
     public List<Estudiante> leerArchivoEstudiantes() throws IOException {
         List<Estudiante> estudiantes = new ArrayList<>();
         try (InputStream in = getClass().getClassLoader().getResourceAsStream("csv_files/estudiantes.csv")) {
-            if (in == null) throw new FileNotFoundException("No se encontró estudiantes.csv");
-            try (Reader reader = new InputStreamReader(in);
+            if (in == null) {
+                throw new FileNotFoundException("No se encontró csv_files/estudiantes.csv en resources");
+            }
+            // Agregado StandardCharsets.UTF_8 para evitar caracteres corruptos en nombres/ciudades
+            try (Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
                  CSVParser parser = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).build().parse(reader)) {
                 for (CSVRecord row : parser) {
                     estudiantes.add(new Estudiante(
@@ -59,9 +64,12 @@ public class CSVreader {
         List<Inscripcion> inscripciones = new ArrayList<>();
 
         try (InputStream in = getClass().getClassLoader().getResourceAsStream("csv_files/estudianteCarrera.csv")) {
-            if (in == null) throw new FileNotFoundException("No se encontró estudianteCarrera.csv");
+            if (in == null) {
+                throw new FileNotFoundException("No se encontró csv_files/estudianteCarrera.csv en resources");
+            }
 
-            try (Reader reader = new InputStreamReader(in);
+            // Agregado StandardCharsets.UTF_8
+            try (Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
                  CSVParser parser = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).build().parse(reader)) {
 
                 for (CSVRecord row : parser) {
@@ -84,11 +92,11 @@ public class CSVreader {
                     }
 
                     LocalDate fechaInscripcion = LocalDate.of(anioInscripcion, 1, 1);
-                    LocalDate fechaEgreso = anioGraduacion == 0
+                    LocalDate fechaEgreso = (anioGraduacion == 0)
                             ? null
                             : LocalDate.of(anioGraduacion, 1, 1);
 
-                    boolean graduado = anioGraduacion != 0;
+                    boolean graduado = (anioGraduacion != 0);
 
                     inscripciones.add(new Inscripcion(
                             antiguedad, fechaInscripcion, fechaEgreso,
