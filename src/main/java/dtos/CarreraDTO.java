@@ -24,7 +24,6 @@ public class CarreraDTO {
     }
 
     public void addInscripcion(Inscripcion inscripcion) {
-
         inscripciones.add(inscripcion);
     }
 
@@ -74,8 +73,7 @@ public class CarreraDTO {
 
     @Override
     public String toString() {
-
-        return nombre + " -> "
-                + getResumenPorAnio();
+        return "Carrera: " + nombre
+                + " | Resumen: " + getResumenPorAnio();
     }
 }
