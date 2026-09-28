@@ -29,7 +29,7 @@ public class CarreraConCantInscriptosDTO {
 
     @Override
     public String toString() {
-
-        return nombre+ " (" + cantInscriptos+")";
+        return "Carrera: " + nombre
+                + " | Inscriptos: " + cantInscriptos;
     }
 }
