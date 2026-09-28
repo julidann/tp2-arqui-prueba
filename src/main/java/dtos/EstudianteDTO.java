@@ -41,12 +41,12 @@ public class EstudianteDTO {
     @Override
     public String toString() {
         return "EstudianteDTO{" +
-                "nombres='" + nombres + ''' +
-                ", apellido='" + apellido + ''' +
+                "nombres='" + nombres +
+                ", apellido='" + apellido  +
                 ", edad=" + edad +
-                ", genero='" + genero + ''' +
+                ", genero='" + genero  +
                 ", dni=" + dni +
-                ", ciudadResidencia='" + ciudadResidencia + ''' +
+                ", ciudadResidencia='" + ciudadResidencia  +
                 ", lu=" + lu +
                 '}';
     }

@@ -38,7 +38,7 @@ public class InscripcionDTO {
                 ", anioInscripcion=" + anioInscripcion +
                 ", anioEgreso=" + anioEgreso +
                 ", graduado=" + graduado +
-                ", carrera='" + nombreCarrera + ''' +
+                ", carrera='" + nombreCarrera  +
                 ", luEstudiante=" + luEstudiante +
                 '}';
     }
