@@ -8,6 +8,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class CSVreader {
         List<Carrera> carreras = new ArrayList<>();
         try (InputStream in = getClass().getClassLoader().getResourceAsStream("csv_files/carreras.csv")) {
             if (in == null) throw new FileNotFoundException("No se encontró carreras.csv");
-            try (Reader reader = new InputStreamReader(in);
+            try (Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
                  CSVParser parser = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).build().parse(reader)) {
                 for (CSVRecord row : parser) {
                     carreras.add(new Carrera(
